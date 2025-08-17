@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <title>JS Port Scanner (localhost / LAN)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <h1>JS-сканер локальных портов</h1>
+    <div class="small">
+        Поддерживаются 3 «косвенных» метода: <code>fetch(no-cors)</code>, загрузка <code>&lt;img&gt;</code>, и попытка
+        <code>WebSocket</code> рукопожатия.
+        На HTTPS‑странице HTTP‑сканирование может блокироваться политикой смешанного контента — запустите файл локально
+        (file://) или по HTTP.
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+        <div class="card">
+            <h3>1) Сканировать <span class="mono">localhost</span></h3>
+            <label>Порты (через запятую)</label>
+            <input id="portsInput" value="80,443,3000,5000,8080,9222" />
+            <div class="row">
+                <div class="small">Методы: fetch/img/ws · таймаут по умолчанию 1200 мс</div>
+                <button id="scanLocalhostBtn">Сканировать localhost</button>
+            </div>
+            <ul id="localhostList"></ul>
+        </div>
+
+        <div class="card">
+            <h3>2) Определить локальный IP и сканировать его</h3>
+            <div class="row">
+                <button id="detectIpBtn">Определить локальный IP</button>
+                <div id="ipDetected" class="small"></div>
+            </div>
+            <div class="row">
+                <div></div>
+                <button id="scanMyIpBtn" disabled>Сканировать мой IP</button>
+            </div>
+            <ul id="myIpList"></ul>
+        </div>
+
+        <div class="card">
+            <h3>3) Сканировать подсеть /24</h3>
+            <div class="small">Напр.: если IP 192.168.1.5 → подсеть 192.168.1.0/24</div>
+            <label>Порты для подсети</label>
+            <input id="subnetPorts" value="80,8080" />
+            <label>Ограничение параллельности (batch)</label>
+            <input id="concurrency" value="50" />
+            <div class="row">
+                <div class="small">Берём сеть из вашего IP (кнопка выше) или укажите префикс вручную ниже.</div>
+                <button id="scanSubnetBtn" disabled>Сканировать подсеть</button>
+            </div>
+            <label>Префикс сети (опционально)</label>
+            <input id="prefixOverride" placeholder="например: 192.168.0." />
+            <div class="progress" style="margin-top:8px">
+                <div id="subnetBar" class="bar"></div>
+            </div>
+            <ul id="subnetList"></ul>
+        </div>
+    </div>
+
+    <!-- Подключаем внешний модуль с логикой приложения -->
+    <script type="module" src="./main.mjs"></script>
+</body>
+
+</html>
